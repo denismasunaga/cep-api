@@ -4,7 +4,7 @@ module Api
       before_action :authorize
 
       def search_cep
-        result, status = Ceps::ProcessRequestService.run(payload: params[:cep])
+        result, status = Ceps::ProcessRequestService.run(payload: params[:cep], user: @user)
         render json: result, status: status
       end
     end

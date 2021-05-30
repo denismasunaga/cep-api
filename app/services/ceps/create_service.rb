@@ -1,7 +1,7 @@
 module Ceps
   class CreateService
-    def self.run(payload:)
-      new(payload: payload).run
+    def self.run(payload:, user:)
+      new(payload: payload, user: user).run
     end
 
     def run
@@ -10,8 +10,9 @@ module Ceps
 
     private
 
-    def initialize(payload:)
+    def initialize(payload:, user:)
       @payload = payload
+      @user = user
     end
 
     def create_cep
@@ -23,7 +24,8 @@ module Ceps
         complemento: @payload['complemento'],
         bairro: @payload['bairro'],
         cidade: @payload['localidade'],
-        uf: @payload['uf']
+        uf: @payload['uf'],
+        user: @user
       )
     end
   end

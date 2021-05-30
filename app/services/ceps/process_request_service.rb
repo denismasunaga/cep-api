@@ -1,7 +1,7 @@
 module Ceps
   class ProcessRequestService
-    def self.run(payload:)
-      new(payload: payload).run
+    def self.run(payload:, user:)
+      new(payload: payload, user: user).run
     end
 
     def run
@@ -10,8 +10,9 @@ module Ceps
 
     private
 
-    def initialize(payload:)
+    def initialize(payload:, user:)
       @payload = payload
+      @user = user
     end
 
     def process_request
@@ -22,7 +23,7 @@ module Ceps
       search_result = Ceps::SearchService.run(cep: @payload)
       return search_result, :unprocessable_entity if search_result.key? :errors
 
-      new_cep = Ceps::CreateService.run(payload: search_result)
+      new_cep = Ceps::CreateService.run(payload: search_result, user: @user)
       return new_cep, :unprocessable_entity if search_result.key? :errors
 
       CepWorker.perform_async(new_cep.attributes)
