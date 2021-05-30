@@ -10,10 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_032039) do
+ActiveRecord::Schema.define(version: 2021_05_30_200212) do
 
   create_table "ceps", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "search_cep"
+    t.string "cep"
     t.text "logradouro"
     t.text "complemento"
     t.string "bairro"
@@ -21,6 +21,8 @@ ActiveRecord::Schema.define(version: 2021_05_30_032039) do
     t.string "uf"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_ceps_on_user_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -36,4 +38,5 @@ ActiveRecord::Schema.define(version: 2021_05_30_032039) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "ceps", "users"
 end

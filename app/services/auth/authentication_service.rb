@@ -17,7 +17,7 @@ module Auth
     def authenticate
       User.find(@decoded_payload.fetch(:id))
     rescue StandardError
-      { errors: 'O token enviado não é válido ou expirou. Efetue um novo login e tente novamente.' }
+      raise 'O token enviado não é válido ou expirou. Efetue um novo login e tente novamente.'
     end
 
     def decoded_payload(payload:)

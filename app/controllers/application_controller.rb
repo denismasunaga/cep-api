@@ -2,7 +2,10 @@ class ApplicationController < ActionController::API
   protected
 
   def authorize
-    Auth::AuthenticationService.run(payload: request_token)
+    @user = Auth::AuthenticationService.run(payload: request_token)
+    raise 'Usuário inexistente!' if @user.blank?
+
+    @user
   rescue StandardError => e
     render json: { errors: e.message }, status: :forbidden
   end
