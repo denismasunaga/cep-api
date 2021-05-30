@@ -2,20 +2,46 @@
 
 Cep-api é um sistema do tipo API only para consulta de Ceps.
 
-* Ruby version
+## Instruções
+Siga as instruções a seguir para rodar o ambiente localmente:
 
-* System dependencies
+#### Pré-requisitos:
+* ruby 2.7.3
+* bundler
+* mysql-server
+* redis-server
 
-* Configuration
+#### Instalação:
+Primeiro, faça o clone do repositório:
 
-* Database creation
+```shell
+$ git clone https://github.com/denismasunaga/cep-api.git
+```
 
-* Database initialization
+Depois acesse o repositório e instale as dependências:
 
-* How to run the test suite
+```shell
+$ cd cep-api
+$ bundle install
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+Então podemos criar o banco e o primeiro usuário:
 
-* Deployment instructions
+```shell
+$ bundle exec rails db:create db:migrate db:seed
+```
 
-* ...
+Feito isso, basta iniciar o Sidekiq e a aplicação em si:
+
+```shell
+$ bundle exec sidekiq
+$ bundle exec rails s
+```
+
+Ps.: A partir da versão 6 do Sidekiq, não é mais possível executá-lo como daemon somente com a flag -d. Por motivos de simplicidade, basta executá-lo em um terminal a parte, diferente do que estará executando o servidor rails ou então usar o comando abaixo:
+
+```shell
+$ bundle exec sidekiq & rails s
+```
+
+Note que neste caso, após a execução do comando, será necessário matar o processo do sidekiq manualmente, uma vez que o comando ctrl + c irá parar somente o rails s.
