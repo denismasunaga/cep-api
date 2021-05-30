@@ -1,0 +1,2 @@
+class Cep < ApplicationRecord
+end
