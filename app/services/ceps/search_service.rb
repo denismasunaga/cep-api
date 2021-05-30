@@ -26,7 +26,10 @@ module Ceps
         request = Net::HTTP::Get.new uri
         response = http.request(request)
 
-        JSON.parse(response.body)
+        result = JSON.parse(response.body)
+        return { errors: 'CEP inválido' } if result['erro']
+
+        result
       end
 
     rescue StandardError

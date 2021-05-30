@@ -1,11 +1,11 @@
 module Ceps
-  class PersistService
+  class CreateService
     def self.run(payload:)
       new(payload: payload).run
     end
 
     def run
-      persist_cep
+      create_cep
     end
 
     private
@@ -14,10 +14,10 @@ module Ceps
       @payload = payload
     end
 
-    def persist_cep
+    def create_cep
       return { errors: 'Payload vazio!' } if @payload.blank?
 
-      Cep.create!(
+      Cep.new(
         cep: @payload['cep'],
         logradouro: @payload['logradouro'],
         complemento: @payload['complemento'],
@@ -25,9 +25,6 @@ module Ceps
         cidade: @payload['localidade'],
         uf: @payload['uf']
       )
-
-    rescue StandardError
-      { errors: 'Não foi possível salvar o CPF.' }
     end
   end
 end
